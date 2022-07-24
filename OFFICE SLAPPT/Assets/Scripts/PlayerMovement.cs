@@ -5,22 +5,18 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    [SerializeField] private float speed;
-    [SerializeField] private float jumpSpeed;
-
-    [SerializeField] private LayerMask ground;
-    private bool isGrounded;
+    [SerializeField] private float defaultSpeed;
+    [SerializeField] private float walkSpeed;
+    [SerializeField] private float sprintMultiplier;
 
     private PlayerControls playerControls;
 
     private Rigidbody2D playerRigidBody;
-    private Collider2D playerCollider;
 
     private void Awake()
     {
         playerControls = new PlayerControls();
         playerRigidBody = GetComponent<Rigidbody2D>();
-        playerCollider = GetComponent<Collider2D>();
     }
 
     private void OnEnable()
@@ -36,57 +32,21 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 moveInput = playerControls.Movement.Move.ReadValue<Vector2>();
-        playerRigidBody.velocity = moveInput * speed;
+        playerRigidBody.velocity = moveInput * walkSpeed;
 
+        playerControls.Movement.Sprint.performed += _ => Sprint();
+
+        playerControls.Movement.Sprint.canceled += _ => stopSprint();
     }
 
-    void Start()
+    private void Sprint()
     {
-       // playerControls.Movement.Jump.performed += _ => Jump();
+       walkSpeed = defaultSpeed * sprintMultiplier;
     }
 
-    /*
-    private void Jump()
+    private void stopSprint()
     {
-        if (isGrounded)
-        {
-            playerRigidBody.gravityScale = 1;
-            playerRigidBody.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
-            playerRigidBody.gravityScale = 0;
-        }
+        walkSpeed = defaultSpeed;
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "Ground")
-        {
-            isGrounded = true;
-            Debug.Log(isGrounded);
-        }
-    }
-
-    
-    private void Jump()
-    {
-        if (isGrounded())
-        {
-            playerRigidBody.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
-        }
-    }
-
-    private bool isGrounded()
-    {
-        Vector2 topLeftPoint = transform.position;
-        topLeftPoint.x -= playerCollider.bounds.extents.x;
-        topLeftPoint.y += playerCollider.bounds.extents.y;
-
-        Vector2 bottomRightPoint = transform.position;
-        bottomRightPoint.x += playerCollider.bounds.extents.x;
-        bottomRightPoint.y -= playerCollider.bounds.extents.y;
-
-        return Physics2D.OverlapArea(topLeftPoint, bottomRightPoint, ground);
-
-        playerRigidBody.gravityScale = 0;
-    }*/
 
 }
