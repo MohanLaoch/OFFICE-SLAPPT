@@ -5,6 +5,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerCombat : MonoBehaviour
 {
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+
+    public int attackDamage = 20;
+
+    public LayerMask enemyLayers;
+
     private PlayerControls playerControls;
 
     private InputAction jab;
@@ -31,6 +38,24 @@ public class PlayerCombat : MonoBehaviour
 
     private void Jab(InputAction.CallbackContext context)
     {
-        Debug.Log("Jab");
+        Attack();
+    }
+
+    void Attack()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<EnemyStats>().TakeDamage(attackDamage);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null)
+            return;
+
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
