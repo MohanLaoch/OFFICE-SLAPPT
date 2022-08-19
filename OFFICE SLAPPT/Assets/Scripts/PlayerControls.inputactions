@@ -123,6 +123,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Combat",
+            "id": "cf6a43a6-753c-4ce7-9317-61ad861cc0e8",
+            "actions": [
+                {
+                    "name": "Jab",
+                    "type": "Button",
+                    "id": "a9e154a2-d310-4492-aaa4-49072f08d3f1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5ec1a58e-0a28-47d2-9f23-b7e1dbb19118",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
